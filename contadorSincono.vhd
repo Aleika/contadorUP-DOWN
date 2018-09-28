@@ -1,39 +1,45 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity contadorSincrono is
+entity contadorSincono is
 
 port (
-    Qe: out std_logic_vector(2 downto 0);
-    clk: in std_logic
-);
+	clk, clear, preset : in std_logic;
+	S : in std_logic;
+	saida : out std_logic_vector (6 downto 0);
+	
+	 Qe: out std_logic_vector(2 downto 0)
+	);
 
-end contadorSincrono;
+end contadorSincono;
 
-architecture contadorSincronoArch of contadorSincrono is
+architecture contadorSincronoArch of contadorSincono is
 
     component flipFlopJK is
         port(
-            J, K, clk,clear, preset: in std_logic;
-            Q, Qbar: out std_logic);
+           	J,K : in std_logic;
+				reset, enable : in std_logic;
+				clk : in std_logic;
+				Q, Qbar: out std_logic
+				);
     end component;
     
-    signal qs, qsb:  std_logic_vector(2 downto 0);
+    signal J, K, qs, qsb:  std_logic_vector(2 downto 0);
 
 begin
                               
-    J2 <= qsb(2) or qs(1) or qs(0);
-	 K2 <= qsb(2) and qsb(1) and qsb(0);
+    J(2) <= ((qsb(2) or qs(1) or qs(0)) and not S) or ((qs(2) or qs(1) or qs(0)) and S);
+	 K(2) <= ((qsb(2) and qsb(1) and qsb(0)) and not S) or ((qsb(2) or qs(1) or qs(0)) and S);
 	 
-	 J1 <= (qsb(2) or qsb(1) or qs(0)) and (qsb(2) or qs(1) or qs(0));
-	 K1 <= qs(1) and qsb(0);
+	 J(1) <= (((qsb(2) or qsb(1) or qs(0)) and (qsb(2) or qs(1) or qs(0))) and not S) or ((qsb(1) and qs(0)) and S);
+	 K(1) <= ((qs(1) and qsb(0)) and not S) or ((qs(1) and qs(0)) and S);
 	 
-	 J0 <= (qsb(2) and qs(0)) or (qs(2)and qs(0));
-	 K0 <= qsb(0);
+	 J(0) <= '0';
+	 K(0) <= '0';
 	 
-	 S01: flipFlopJK port map (J0, K0 , clk, '1', '1', qs(0), qsb(0)); 
-    S02: flipFlopJK port map (J1, K1, clk, '1', '1', qs(1), qsb(1));
-    S03: flipFlopJK port map (J2, K2, clk, '1', '1', qs(2), qsb(2));
+	 S01: flipFlopJK port map (J(0), K(0), clk, '0', '0', qs(0), qsb(0)); 
+    S02: flipFlopJK port map (J(1), K(1), clk, '0', '0', qs(1), qsb(1));
+    S03: flipFlopJK port map (J(2), K(2), clk, '0', '0', qs(2), qsb(2));
     
     Qe <= qs;
 end contadorSincronoArch;

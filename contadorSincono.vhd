@@ -57,6 +57,6 @@ begin
     
     Qe <= qs;
 	 
-	 saidaDispaly: conv_bin_7seg port map (qs(2), qs(1), qs(0), '0', saida);
+	 saidaDisplay: conv_bin_7seg port map (qs(2), qs(1), qs(0), '0', saida);
 
 end contadorSincronoArch;

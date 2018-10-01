@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity contadorSincono is
+entity contadorSincrono is
 
 port (
 	clk, enable, reset : in std_logic;
@@ -11,9 +11,9 @@ port (
 	 Qe: out std_logic_vector(2 downto 0)
 	);
 
-end contadorSincono;
+end contadorSincrono;
 
-architecture contadorSincronoArch of contadorSincono is
+architecture contadorSincronoArch of contadorSincrono is
 
     component flipFlopJK is
         port(
@@ -25,12 +25,8 @@ architecture contadorSincronoArch of contadorSincono is
     end component;
 	 
 	component conv_bin_7seg is
-	port
-	(
-		eA,eB,eC,eD	: in  std_logic;
-		display: out std_logic_vector(6 downto 0)
-
-	);
+		Port ( B3,B2,B1,B0 : in STD_LOGIC;
+		display: out STD_LOGIC_vector(6 downto 0));
 	end component;
     
     signal J, K, qs, qsb:  std_logic_vector(2 downto 0);

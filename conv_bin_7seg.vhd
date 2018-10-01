@@ -1,43 +1,21 @@
-library ieee;
-use ieee.std_logic_1164.all;
-
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+ 
 entity conv_bin_7seg is
-	port
-	(
-		eA,eB,eC,eD	: in  std_logic;
-		display: out std_logic_vector(6 downto 0)
-
-	);
+	Port ( B3,B2,B1,B0 : in STD_LOGIC;
+	display: out STD_LOGIC_vector(6 downto 0));
 end conv_bin_7seg;
  
-architecture conv_bin_7seg of conv_bin_7seg is
- 
+architecture Behavioral of conv_bin_7seg is
  
 begin
---lógica que implementa o segmento a de um display (0,1,2,3,4,5,6,7,8,9), sem minimização.
--- 0 -> aceso (ON),  1 -> apagado (OFF)
  
-display(0) <= (NOT eD AND NOT eC AND NOT eB AND eA) OR  
-		(NOT eD AND eC AND NOT eB AND NOT eA);
---implemente a lógica dos demais segmentos do display (0,1,2,3,4,5,6,7,8,9), sem minimização.
-display(1) <= (NOT eD AND eC AND NOT eB AND eA) OR (NOT eD AND eC AND eB AND NOT eA);
-
-display(2) <= (NOT eD AND NOT eC AND  eB AND eA);
-
-display(3) <= (NOT eD AND NOT eC AND NOT eB AND eA) OR (NOT eD AND eC AND NOT eB AND NOT eA) OR(NOT eD AND eC AND eB AND  eA);
-
-display(4) <= (NOT eD AND NOT eC AND NOT eB AND  eA) OR  
-		(NOT eD AND NOT eC AND  eB AND  eA) OR
-                (NOT eD AND eC AND NOT eB AND NOT eA) OR  
-		(NOT eD AND eC AND NOT eB AND eA) OR
-                (NOT eD AND  eC AND  eB AND  eA) OR  
-		( eD AND NOT eC AND NOT eB AND eA);
-display(5) <=            (NOT eD AND NOT eC AND NOT eB AND eA) OR  
-		(NOT eD AND NOT eC AND  eB AND NOT eA) OR
-                (NOT eD AND NOT eC AND eB AND  eA) OR  
-		(NOT eD AND  eC AND  eB AND  eA);
-display(6) <=            (NOT eD AND NOT eC AND NOT eB AND NOT eA) OR  
-		(NOT eD AND NOT eC AND NOT eB AND  eA) OR
-                (NOT eD AND  eC AND  eB AND  eA);
+display(6) <= not(B0 OR B2 OR (B1 AND B3) OR (NOT B1 AND NOT B3));
+display(5) <= not ((NOT B1) OR (NOT B2 AND NOT B3) OR (B2 AND B3));
+display(4) <= not (B1 OR NOT B2 OR B3);
+display(3) <= not ((NOT B1 AND NOT B3) OR (B2 AND NOT B3) OR (B1 AND NOT B2 AND B3) OR (NOT B1 AND B2) OR B0);
+display(2) <= not ((NOT B1 AND NOT B3) OR (B2 AND NOT B3));
+display(1) <= not (B0 OR (NOT B2 AND NOT B3) OR (B1 AND NOT B2) OR (B1 AND NOT B3));
+display(0) <= not (B0 OR (B1 AND NOT B2) OR ( NOT B1 AND B2) OR (B2 AND NOT B3));
  
-end conv_bin_7seg;
+end Behavioral;

@@ -25,7 +25,7 @@ architecture contadorSincronoArch of contadorSincrono is
     end component;
 	 
 	component conv_bin_7seg is
-		Port ( B3,B2,B1,B0 : in STD_LOGIC;
+		Port ( a,b,c : in STD_LOGIC;
 		display: out STD_LOGIC_vector(6 downto 0));
 	end component;
     
@@ -53,6 +53,6 @@ begin
     
     Qe <= qs;
 	 
-	 saidaDisplay: conv_bin_7seg port map (qs(2), qs(1), qs(0), '0', saida);
+	 saidaDisplay: conv_bin_7seg port map (qs(2), qs(1), qs(0), saida);
 
 end contadorSincronoArch;
